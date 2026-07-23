@@ -90,7 +90,7 @@ fun ChatScreen(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                drawerContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 modifier = Modifier.width(300.dp)
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -447,9 +447,10 @@ fun ChatScreen(
                             .shadow(2.dp, RoundedCornerShape(24.dp))
                             .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(24.dp)),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent,
-                            containerColor = Color.Transparent
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent
                         ),
                         maxLines = 4,
                         shape = RoundedCornerShape(24.dp)
