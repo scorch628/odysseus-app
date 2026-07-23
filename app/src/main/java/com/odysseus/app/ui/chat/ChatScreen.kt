@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -117,7 +118,7 @@ fun ChatScreen(
                         )
                     }
                 }
-                Divider(
+                HorizontalDivider(
                     modifier = Modifier.padding(vertical = 8.dp),
                     color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
                 )
@@ -180,7 +181,7 @@ fun ChatScreen(
                     }
                 }
 
-                Divider(
+                HorizontalDivider(
                     modifier = Modifier.padding(vertical = 8.dp),
                     color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
                 )

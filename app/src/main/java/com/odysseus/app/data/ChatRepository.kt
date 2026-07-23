@@ -8,6 +8,7 @@ import com.odysseus.app.data.remote.ChatCompletionResponse
 import com.odysseus.app.data.remote.ChatMessage
 import com.odysseus.app.data.remote.ModelListResponse
 import io.ktor.client.*
+import io.ktor.client.call.body
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
