@@ -1,0 +1,13 @@
+package com.odysseus.app.data.local
+
+import androidx.room.Database
+import androidx.room.RoomDatabase
+
+@Database(
+    entities = [ChatSessionEntity::class, MessageEntity::class],
+    version = 1,
+    exportSchema = false
+)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun chatDao(): ChatDao
+}
