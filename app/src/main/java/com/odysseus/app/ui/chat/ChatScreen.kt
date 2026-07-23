@@ -447,8 +447,8 @@ fun ChatScreen(
                             .shadow(2.dp, RoundedCornerShape(24.dp))
                             .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(24.dp)),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
+                            focusedBorderColor = Color.Transparent,
+                            unfocusedBorderColor = Color.Transparent,
                             focusedContainerColor = Color.Transparent,
                             unfocusedContainerColor = Color.Transparent
                         ),
