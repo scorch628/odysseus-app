@@ -5,15 +5,19 @@ import com.odysseus.app.ui.base.UiSideEffect
 import com.odysseus.app.ui.base.UiState
 
 sealed class SettingsIntent : UiIntent {
-    data class LoadSettings(val apiUrl: String, val apiKey: String) : SettingsIntent()
+    data class LoadSettings(val apiUrl: String, val apiKey: String, val username: String, val password: String) : SettingsIntent()
     data class UpdateApiUrl(val apiUrl: String) : SettingsIntent()
     data class UpdateApiKey(val apiKey: String) : SettingsIntent()
+    data class UpdateUsername(val username: String) : SettingsIntent()
+    data class UpdatePassword(val password: String) : SettingsIntent()
     object SaveSettings : SettingsIntent()
 }
 
 data class SettingsState(
     val apiUrl: String = "",
     val apiKey: String = "",
+    val username: String = "",
+    val password: String = "",
     val isLoading: Boolean = false,
     val isSaved: Boolean = false
 ) : UiState

@@ -7,6 +7,7 @@ import com.odysseus.app.data.remote.ChatCompletionRequest
 import com.odysseus.app.data.remote.ChatCompletionResponse
 import com.odysseus.app.data.remote.ChatMessage
 import com.odysseus.app.data.remote.ModelListResponse
+import com.odysseus.app.data.remote.LoginRequest
 import io.ktor.client.*
 import io.ktor.client.call.body
 import io.ktor.client.request.*
@@ -65,7 +66,34 @@ class ChatRepository @Inject constructor(
         chatDao.deleteAllSessions()
     }
 
+    private suspend fun ensureAuthenticated() {
+        val baseUrl = settingsRepository.apiUrl.first()
+        val username = settingsRepository.username.first()
+        val password = settingsRepository.password.first()
+
+        if (username.isNotBlank() && password.isNotBlank()) {
+            val loginUrl = if (baseUrl.endsWith("/v1")) {
+                baseUrl.substring(0, baseUrl.length - 3) + "/api/auth/login"
+            } else if (baseUrl.endsWith("/v1/")) {
+                baseUrl.substring(0, baseUrl.length - 4) + "/api/auth/login"
+            } else {
+                "$baseUrl/api/auth/login"
+            }
+
+            try {
+                httpClient.post {
+                    url(loginUrl)
+                    contentType(ContentType.Application.Json)
+                    setBody(LoginRequest(username = username, password = password))
+                }
+            } catch (e: Exception) {
+                // If login fails, let subsequent requests fail naturally or log it
+            }
+        }
+    }
+
     suspend fun fetchModels(): List<String> {
+        ensureAuthenticated()
         val baseUrl = settingsRepository.apiUrl.first()
         val apiKey = settingsRepository.apiKey.first()
 
@@ -83,6 +111,7 @@ class ChatRepository @Inject constructor(
         model: String,
         messages: List<ChatMessage>
     ): Flow<String> = flow {
+        ensureAuthenticated()
         val baseUrl = settingsRepository.apiUrl.first()
         val apiKey = settingsRepository.apiKey.first()
 

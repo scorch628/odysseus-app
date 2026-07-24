@@ -21,7 +21,9 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             val url = repository.apiUrl.first()
             val key = repository.apiKey.first()
-            setIntent(SettingsIntent.LoadSettings(url, key))
+            val user = repository.username.first()
+            val pass = repository.password.first()
+            setIntent(SettingsIntent.LoadSettings(url, key, user, pass))
         }
     }
 
@@ -32,6 +34,8 @@ class SettingsViewModel @Inject constructor(
                     copy(
                         apiUrl = intent.apiUrl,
                         apiKey = intent.apiKey,
+                        username = intent.username,
+                        password = intent.password,
                         isLoading = false
                     )
                 }
@@ -42,11 +46,19 @@ class SettingsViewModel @Inject constructor(
             is SettingsIntent.UpdateApiKey -> {
                 setState { copy(apiKey = intent.apiKey) }
             }
+            is SettingsIntent.UpdateUsername -> {
+                setState { copy(username = intent.username) }
+            }
+            is SettingsIntent.UpdatePassword -> {
+                setState { copy(password = intent.password) }
+            }
             SettingsIntent.SaveSettings -> {
                 hapticManager.vibrateCopy()
                 val currentUrl = state.value.apiUrl
                 val currentKey = state.value.apiKey
-                repository.saveSettings(currentUrl, currentKey)
+                val currentUsername = state.value.username
+                val currentPassword = state.value.password
+                repository.saveSettings(currentUrl, currentKey, currentUsername, currentPassword)
                 setEffect(SettingsEffect.ShowToast("Settings saved!"))
                 setEffect(SettingsEffect.NavigateBack)
             }

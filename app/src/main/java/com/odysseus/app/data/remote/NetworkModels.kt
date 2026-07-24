@@ -43,3 +43,10 @@ data class ModelItem(
     val created: Long? = null,
     @SerialName("owned_by") val ownedBy: String? = null
 )
+
+@Serializable
+data class LoginRequest(
+    val username: String,
+    val password: String,
+    val remember: Boolean = true
+)

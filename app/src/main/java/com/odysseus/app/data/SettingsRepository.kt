@@ -20,6 +20,8 @@ class SettingsRepository @Inject constructor(
 ) {
     private val apiUrlKey = stringPreferencesKey("api_url")
     private val apiKeyKey = stringPreferencesKey("api_key")
+    private val usernameKey = stringPreferencesKey("username")
+    private val passwordKey = stringPreferencesKey("password")
 
     val apiUrl: Flow<String> = context.dataStore.data.map { preferences ->
         preferences[apiUrlKey] ?: "http://10.0.2.2:5000/v1"
@@ -29,10 +31,20 @@ class SettingsRepository @Inject constructor(
         preferences[apiKeyKey] ?: ""
     }
 
-    suspend fun saveSettings(apiUrl: String, apiKey: String) {
+    val username: Flow<String> = context.dataStore.data.map { preferences ->
+        preferences[usernameKey] ?: ""
+    }
+
+    val password: Flow<String> = context.dataStore.data.map { preferences ->
+        preferences[passwordKey] ?: ""
+    }
+
+    suspend fun saveSettings(apiUrl: String, apiKey: String, username: String, password: String) {
         context.dataStore.edit { preferences ->
             preferences[apiUrlKey] = apiUrl
             preferences[apiKeyKey] = apiKey
+            preferences[usernameKey] = username
+            preferences[passwordKey] = password
         }
     }
 }

@@ -33,6 +33,7 @@ fun SettingsScreen(
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     var showApiKey by remember { mutableStateOf(false) }
+    var showPassword by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect { effect ->
@@ -115,6 +116,42 @@ fun SettingsScreen(
                     placeholder = { Text("e.g., http://10.0.2.2:5000/v1") },
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
+                    )
+                )
+
+                OutlinedTextField(
+                    value = state.username,
+                    onValueChange = { viewModel.setIntent(SettingsIntent.UpdateUsername(it)) },
+                    label = { Text("Username (Optional)") },
+                    placeholder = { Text("Enter your username") },
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
+                    )
+                )
+
+                OutlinedTextField(
+                    value = state.password,
+                    onValueChange = { viewModel.setIntent(SettingsIntent.UpdatePassword(it)) },
+                    label = { Text("Password (Optional)") },
+                    placeholder = { Text("Enter your password") },
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    trailingIcon = {
+                        val image = if (showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                        IconButton(onClick = { showPassword = !showPassword }) {
+                            Icon(imageVector = image, contentDescription = "Toggle password visibility")
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
